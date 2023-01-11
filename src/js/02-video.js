@@ -6,14 +6,15 @@ import Player from '@vimeo/player';
 
 const iframe = document.querySelector('#vimeo-player');
 const player = new Player(iframe);
-checkPlayTimeProgress();
-player.play().then(function() {
-    
 
-player.on(timeupdate, onPlay);
+player.ready().then(function() {
+    checkPlayTimeProgress();
+    player.on('timeupdate',function(e) {
+        localStorage.setItem('playTimeProgress', e.seconds)
+    });
 })
 
 function checkPlayTimeProgress() {
-    localStorage.getItem('playProgress')
+    const progress = localStorage.getItem('playTimeProgress')
     if(progress)player.setCurrentTime(progress);
 }
